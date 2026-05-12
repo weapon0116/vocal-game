@@ -25,7 +25,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🎯 주파수 게임 모드")
+st.title("🎯 주파수 맞추기 게임")
 
 # --- [3. 게임 로직] ---
 if 'target_hz' not in st.session_state:
@@ -38,7 +38,7 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-if st.button("🔄 타겟 변경", use_container_width=True):
+if st.button("🔄 주파수 변경", use_container_width=True):
     st.session_state.target_hz = round(random.uniform(160.0, 300.0), 1)
     st.rerun()
 
