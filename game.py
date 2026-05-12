@@ -39,7 +39,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 if st.button("🔄 타겟 변경", use_container_width=True):
-    st.session_state.target_hz = round(random.uniform(160.0, 300.0), 1)
+    st.session_state.target_hz = round(random.uniform(120.0, 800.0), 1)
     st.rerun()
 
 game_audio = st.audio_input("지금 바로 소리내고 체크하세요!", key="game_input")
