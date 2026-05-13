@@ -7,7 +7,7 @@ import random
 # --- [1. 기본 설정] ---
 st.set_page_config(page_title="V-RAP: 주파수 챌린지", layout="centered")
 
-# --- [2. CSS 디자인 (보내주신 스타일 유지)] ---
+# --- [2. CSS 디자인] ---
 st.markdown("""
     <style>
         .report-box { 
@@ -39,6 +39,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 if st.button("🔄 타겟 변경", use_container_width=True):
+    # 타겟 범위를 조금 더 넓게 조정 (원하시는 범위가 있다면 수정 가능)
     st.session_state.target_hz = round(random.uniform(120.0, 800.0), 1)
     st.rerun()
 
@@ -46,13 +47,13 @@ game_audio = st.audio_input("지금 바로 소리내고 체크하세요!", key="
 
 if game_audio:
     try:
-        # [초고속 로드] 메모리에서 직접 읽기
+        # [초고속 로드]
         audio_bytes = game_audio.read()
         sr, y = wav.read(io.BytesIO(audio_bytes))
         
         if len(y.shape) > 1: y = y[:, 0]
         
-        # [초고속 분석] 0.5초만 사용하여 연산량 최소화
+        # [초고속 분석]
         y = y[:int(sr * 0.5)].astype(float)
         y -= np.mean(y) 
         
@@ -62,10 +63,14 @@ if game_audio:
         peak = np.argmax(corr[start:]) + start
         
         if peak > 0:
-            avg_f0 = sr / peak
-            if 80 < avg_f0 < 500:
+            raw_f0 = sr / peak
+            # ★ 요청하신 부분: 결과 값에 2배를 곱함
+            avg_f0 = raw_f0 * 2 
+            
+            # 판정 범위도 2배 보정에 맞춰 확장 (80~1000Hz)
+            if 80 < avg_f0 < 1000:
                 diff = abs(avg_f0 - st.session_state.target_hz)
-                st.markdown(f"<div class='report-box'><small>나의 기록</small><div class='my-val'>{avg_f0:.1f} Hz</div></div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='report-box'><small>나의 기록 (2배 보정)</small><div class='my-val'>{avg_f0:.1f} Hz</div></div>", unsafe_allow_html=True)
                 
                 if diff <= 20:
                     st.balloons()
