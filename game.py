@@ -24,7 +24,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🎯 파워 주파수 챌린지")
+st.title("🎯 주파수 맞추기 게임")
 
 # --- [2. 게임 로직] ---
 if 'target_hz' not in st.session_state:
