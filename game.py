@@ -73,7 +73,7 @@ if game_audio:
             avg_f0 = raw_f0 * weight
             
             # 최종 판정
-            if 10 =< avg_f0 =< 1000: # 범위 제한도 1500까지 넉넉하게!
+            if 10 <= avg_f0 <= 1000: # 범위 제한도 1500까지 넉넉하게!
                 diff = abs(avg_f0 - st.session_state.target_hz)
                 
                 # 결과값만 깔끔하게 표시 (뭘 곱했는지는 비밀!)
